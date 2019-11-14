@@ -7,11 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
 
 class AuctionController extends Controller {
     /**
@@ -29,11 +24,11 @@ class AuctionController extends Controller {
     /**
      * @Route("/{id}", name="auction_details")
      * s
-     * @param $id
+     * @param Auction $auction
+     * 
+     * @return Response
      */
-    public function detailsAction($id) {
-        $endtityManager = $this->getDoctrine()->getManager();
-        $auction = $endtityManager->getRepository(Auction::class)->findOneBy(["id" => $id]);
+    public function detailsAction(Auction $auction) {
         return $this->render("Auction/details.html.twig", ["auction" => $auction]);
     }
 
