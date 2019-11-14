@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Lista aukcji</h1>
+
+    {% for auction in auctions %}
+        <h3>{{ auction.title }}</h3>
+        <p>{{ auction.desctription }}</p>
+        <p>{{ auction.price }}</p>
+    {% endfor %}
+    
+{% endblock %}
