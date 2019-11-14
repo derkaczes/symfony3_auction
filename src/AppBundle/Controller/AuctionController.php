@@ -41,6 +41,6 @@ class AuctionController extends Controller {
      * @param $id
      */
     public function detailsAction($id) {
-        return $this->render("");
+        return $this->render("Auction/details.html.twig");
     }
 }
