@@ -76,7 +76,7 @@ class AuctionController extends Controller {
         return $this->render("Auction/edit.html.twig", ["form" => $form->createView()]);
     }
     /**
-     * @Route("/auction/delete/{id}", name="auction_delete")
+     * @Route("/auction/delete/{id}", name="auction_delete", methods={"DELETE"})
      * 
      * @param Auction $auction
      * 
