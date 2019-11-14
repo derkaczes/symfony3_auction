@@ -43,6 +43,10 @@ class AuctionController extends Controller {
 
         if($request->isMethod("post")) {
             $form->handleRequest($request);
+            $auction
+                ->setCreatedAt(new \DateTime())
+                ->setUpdatedAt(new \DateTime())
+                ->setStatus(Auction::STATUS_ACTIVE);
             $endtityManager = $this->getDoctrine()->getManager();
             $endtityManager->persist($auction);
             $endtityManager->flush();

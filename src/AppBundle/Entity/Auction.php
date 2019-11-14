@@ -15,7 +15,7 @@ class Auction
     const STATUS_ACTIVE = "active";
     const STATUS_FINISHED = "finished";
     const STATUS_CANCELLED = "cancelled";
-    
+
     /**
      * @var int
      *
@@ -267,7 +267,7 @@ class Auction
      *
      * @return Auction
      */
-    public function setStatus(\DateTime $status)
+    public function setStatus($status)
     {
         $this->status = $status;
 
