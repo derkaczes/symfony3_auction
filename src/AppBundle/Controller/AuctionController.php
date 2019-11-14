@@ -32,7 +32,9 @@ class AuctionController extends Controller {
      * @param $id
      */
     public function detailsAction($id) {
-        return $this->render("Auction/details.html.twig");
+        $endtityManager = $this->getDoctrine()->getManager();
+        $auction = $endtityManager->getRepository(Auction::class)->findOneBy(["id" => $id]);
+        return $this->render("Auction/details.html.twig", ["auction" => $auction]);
     }
 
     /**
