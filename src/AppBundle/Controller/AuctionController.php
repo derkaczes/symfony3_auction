@@ -5,6 +5,7 @@ use AppBundle\Entity\Auction;
 use AppBundle\Form\AuctionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -45,9 +46,9 @@ class AuctionController extends Controller {
             $form->handleRequest($request);
             $auction
                 ->setStatus(Auction::STATUS_ACTIVE);
-            $endtityManager = $this->getDoctrine()->getManager();
-            $endtityManager->persist($auction);
-            $endtityManager->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($auction);
+            $entityManager->flush();
 
             return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
         }
@@ -66,12 +67,26 @@ class AuctionController extends Controller {
         $form = $this->createForm(AuctionType::class, $auction);
         if($request->isMethod("post")) {
             $form->handleRequest($request);
-            $endtityManager = $this->getDoctrine()->getManager();
-            $endtityManager->persist($auction);
-            $endtityManager->flush();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($auction);
+            $entityManager->flush();
 
             return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
         }
         return $this->render("Auction/edit.html.twig", ["form" => $form->createView()]);
+    }
+    /**
+     * @Route("/auction/delete/{id}", name="auction_delete")
+     * 
+     * @param Auction $auction
+     * 
+     * @return RedirectResponse
+     */
+    public function deleteAction(Auction $auction) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($auction);
+        $entityManager->flush();
+
+        return $this->redirectToRoute("auction_index");
     }
 }
