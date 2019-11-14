@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Auction;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -38,7 +39,7 @@ class AuctionController extends Controller {
      * 
      * @return Response
      */
-    public function addAction() {
+    public function addAction(Request $request) {
         $auction = new Auction();
         $form = $this->createFormBuilder($auction)
             ->add("title", TextType::class)
@@ -46,6 +47,17 @@ class AuctionController extends Controller {
             ->add("price", NumberType::class)
             ->add("submit", SubmitType::class)
             ->getForm();
+
+        if($request->isMethod("post")) {
+            $form->handleRequest($request);
+            $auction = $form->getData();
+            $endtityManager = $this->getDoctrine()->getManager();
+            $endtityManager->persist($auction);
+            $endtityManager->flush();
+
+            return $this->redirectToRoute("auction_index");
+        }
+
         return $this->render("Auction/add.html.twig", ["form" => $form->createView()]);
     }
 }
