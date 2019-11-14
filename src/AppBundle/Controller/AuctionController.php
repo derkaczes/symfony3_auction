@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AuctionController extends Controller {
@@ -29,8 +30,13 @@ class AuctionController extends Controller {
      * 
      * @return Response
      */
-    public function detailsAuction(Auction $auction) {
-        return $this->render("Auction/details.html.twig", ["auction" => $auction]);
+    public function detailsAction(Auction $auction) {
+        $deleteForm = $this->createFormBuilder()
+            ->setAction($this->generateUrl("auction_delete", ["id" => $auction->getId()]))
+            ->setMethod(Request::METHOD_DELETE)
+            ->add("submit", SubmitType::class, ["label" => "Usuń"])
+            ->getForm();
+        return $this->render("Auction/details.html.twig", ["auction" => $auction, "deleteForm" => $deleteForm->createView()]);
     }
 
     /**
@@ -38,7 +44,7 @@ class AuctionController extends Controller {
      * 
      * @return Response
      */
-    public function addAuction(Request $request) {
+    public function addAction(Request $request) {
         $auction = new Auction();
         $form = $this->createForm(AuctionType::class, $auction);
 
@@ -63,7 +69,7 @@ class AuctionController extends Controller {
      * 
      * @return Response
      */
-    public function editAuction(Request $request, Auction $auction) {
+    public function editAction(Request $request, Auction $auction) {
         $form = $this->createForm(AuctionType::class, $auction);
         if($request->isMethod("post")) {
             $form->handleRequest($request);
