@@ -1,9 +1,20 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <h1> {{ auction.title }}</h1>
-    <p> {{ auction.description }}</p>
-    <p> {{ auction.price }}</p>
+   <div class="card">
+        <div class="card-body">
+            <div class="card-title">
+                <a href="{{ url("auction_details", {"id": auction.id}) }}">{{ auction.title }}</a>
+            </div>
+            <div class="card-text">
+                <p>{{ auction.description }}</p>
+            </div>
 
-    <a href="{{ url('auction_index')}}">Powrót</a>
+            <ul class="list-group list-group-flus">
+                <li class="list-group-item">Cena: {{ auction.price }} zł</li>
+            </ul>
+        </div>
+    </div>
+
+    <a class="btn btn-default" href="{{ url('auction_index')}}">Powrót</a>
 {% endblock %}
