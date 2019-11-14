@@ -24,7 +24,7 @@ class AuctionController extends Controller {
     }
 
     /**
-     * @Route("/{id}", name="auction_details")
+     * @Route("/auction/details/{id}", name="auction_details")
      * s
      * @param Auction $auction
      * 
@@ -36,8 +36,18 @@ class AuctionController extends Controller {
             ->setMethod(Request::METHOD_DELETE)
             ->add("submit", SubmitType::class, ["label" => "Usuń"])
             ->getForm();
-            
-        return $this->render("Auction/details.html.twig", ["auction" => $auction, "deleteForm" => $deleteForm->createView()]);
+        
+        $finishForm = $this->createFormBuilder() 
+            ->setAction($this->generateUrl("auction_finish", ["id" => $auction->getId()]))
+            ->add("submit", SubmitType::class, ["label" => "Zakończ"])
+            ->getForm();
+
+        return $this->render("Auction/details.html.twig", 
+            [
+                "auction" => $auction, 
+                "deleteForm" => $deleteForm->createView(), 
+                "finishForm" => $finishForm->createView()
+            ]);
     }
 
     /**
