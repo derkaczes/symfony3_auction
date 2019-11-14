@@ -36,6 +36,7 @@ class AuctionController extends Controller {
             ->setMethod(Request::METHOD_DELETE)
             ->add("submit", SubmitType::class, ["label" => "Usuń"])
             ->getForm();
+            
         return $this->render("Auction/details.html.twig", ["auction" => $auction, "deleteForm" => $deleteForm->createView()]);
     }
 
@@ -61,6 +62,7 @@ class AuctionController extends Controller {
 
         return $this->render("Auction/add.html.twig", ["form" => $form->createView()]);
     }
+
     /**
      * @Route("/auction/edit/{id}", name="auction_edit")
      * 
@@ -81,6 +83,7 @@ class AuctionController extends Controller {
         }
         return $this->render("Auction/edit.html.twig", ["form" => $form->createView()]);
     }
+
     /**
      * @Route("/auction/delete/{id}", name="auction_delete", methods={"DELETE"})
      * 
@@ -94,5 +97,23 @@ class AuctionController extends Controller {
         $entityManager->flush();
 
         return $this->redirectToRoute("auction_index");
+    }
+
+    /**
+     * @Route("/auction/finish/{id}", name="auction_finish", methods={"POST"})
+     * 
+     * @param Auction $auction
+     * 
+     * @return RedirectResponse
+     */
+    public function finishAction(Auction $auction) {
+        $auction
+            ->setExpiresAt(new \DateTime())
+            ->setStatus(Auction::STATUS_FINISHED);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($auction);
+        $entityManager->flush();
+
+        return $this->redirectToRoute("auto_details", ["id" => $auction->getId()]);
     }
 }
