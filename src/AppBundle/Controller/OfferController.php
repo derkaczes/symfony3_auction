@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Auction;
 use AppBundle\Entity\Offer;
@@ -33,5 +34,29 @@ class OfferController extends Controller {
         $entityManager->flush();
 
         return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+    }
+
+    /**
+     * @Route("/auction/bid/{id}, name="offer_bid", methods={"post"})
+     * 
+     * @param Request $request
+     * @param Auction $auction
+     * 
+     * @return RedirectResponse
+     */
+    public function bidAction(Request $request, Auction $auction) {
+        $offer = new Offer();
+        $bidForm = $this->createForm(BidType::class, $offer);
+        $bidForm->handleRequest($request);
+        $offer
+            ->setType(Offer::TYPE_BID)
+            ->setAuction($auction);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($offer);
+        $entityManager->flush();
+
+        return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+    }
     }
 }
