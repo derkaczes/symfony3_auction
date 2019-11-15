@@ -17,21 +17,31 @@
             </ul>
         </div>
     </div>
-
-    <a class="btn btn-primary float-left" href="{{ url("auction_index")}}">Powrót</a>
-    <a class="btn btn-info float-left" href="{{ url("auction_edit", {"id": auction.id}) }}">Edytuj</a>
-
-    {{ form_start(deleteForm, {"attr": {"class": "float-left"}}) }}
-        {{ form_widget(deleteForm.submit, {"attr": {"class": "btn-danger"}}) }}
-        {{ form_rest(deleteForm) }}
-    {{ form_end(deleteForm) }}
-    {{ form_start(finishForm, {"attr": {"class": "float-left"}}) }}
-        {{ form_widget(finishForm.submit, {"attr": {"class": "btn-warning"}}) }}
-        {{ form_rest(finishForm) }}
-    {{ form_end(finishForm) }}
-    {{ form_start(buyForm, {"attr": {"class": "float-left"}}) }}
-        {{ form_widget(buyForm.submit, {"attr": {"class": "btn-success"}}) }}
-        {{ form_rest(buyForm) }}
-    {{ form_end(buyForm) }}
-
+   
+    <div class="card">
+        <div class="card-body">
+            <a class="btn btn-primary float-left" href="{{ url("auction_index")}}">Powrót</a>
+            <a class="btn btn-info float-left" href="{{ url("auction_edit", {"id": auction.id}) }}">Edytuj</a>
+            {{ form_start(deleteForm, {"attr": {"class": "float-left"}}) }}
+                {{ form_widget(deleteForm.submit, {"attr": {"class": "btn-danger"}}) }}
+                {{ form_rest(deleteForm) }}
+            {{ form_end(deleteForm) }}
+            {{ form_start(finishForm, {"attr": {"class": "float-left"}}) }}
+                {{ form_widget(finishForm.submit, {"attr": {"class": "btn-warning"}}) }}
+                {{ form_rest(finishForm) }}
+            {{ form_end(finishForm) }}
+            {{ form_start(buyForm, {"attr": {"class": "float-left"}}) }}
+                {{ form_widget(buyForm.submit, {"attr": {"class": "btn-success"}}) }}
+                {{ form_rest(buyForm) }}
+            {{ form_end(buyForm) }}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(bidForm, {"attr": {"class": "float-left"}}) }}
+                {{ form_rest(bidForm) }}
+                {{ form_widget(bidForm.submit, {"attr": {"class": "btn-success"}}) }}
+            {{ form_end(bidForm) }}
+        </div>
+    </div>
 {% endblock %}

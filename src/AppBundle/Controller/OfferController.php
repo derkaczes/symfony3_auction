@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Entity\Auction;
+use AppBundle\Form\BidType;
 use AppBundle\Entity\Offer;
 
 class OfferController extends Controller {
@@ -37,7 +38,7 @@ class OfferController extends Controller {
     }
 
     /**
-     * @Route("/auction/bid/{id}, name="offer_bid", methods={"post"})
+     * @Route("/auction/bid/{id}", name="offer_bid", methods={"POST"})
      * 
      * @param Request $request
      * @param Auction $auction
@@ -58,5 +59,5 @@ class OfferController extends Controller {
 
         return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
     }
-    }
+    
 }
