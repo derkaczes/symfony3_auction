@@ -60,6 +60,11 @@ class OfferController extends Controller {
                     $this->addFlash("error", "Twoja oferta nie może być niższa niż {$lastOffer->getPrice()} zł.");
                     return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
                 }
+            } else {
+                if($offer->getPrice() < $auction->getStartingPrice()) {
+                    $this->addFlash("error", "Twoja oferta nie może być niższa od ceny wywoławczej");
+                    return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+                }
             }
             $offer
                 ->setType(Offer::TYPE_BID)
