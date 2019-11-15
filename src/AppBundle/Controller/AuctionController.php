@@ -31,6 +31,11 @@ class AuctionController extends Controller {
      * @return Response
      */
     public function detailsAction(Auction $auction) {
+
+        if($auction->getStatus() === Auction::STATUS_FINISHED) {
+            return $this->render("Auction/finished.html.twig", ["auction" => $auction]);
+        }
+
         $deleteForm = $this->createFormBuilder()
             ->setAction($this->generateUrl("auction_delete", ["id" => $auction->getId()]))
             ->setMethod(Request::METHOD_DELETE)

@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+   <div class="card">
+        <div class="card-body">
+            <div class="card-title">
+                <a href="{{ url("auction_details", {"id": auction.id}) }}">{{ auction.title }}</a>
+            </div>
+            <div class="card-text">
+                <p>{{ auction.description }}</p>
+            </div>
+
+            <ul class="list-group list-group-flus">
+                <li class="list-group-item">Cena: {{ auction.price }} zł</li>
+                <li class="list-group-item">Cena wywoławcza: {{ auction.startingPrice }} zł</li>
+                <li class="list-group-item">Aukcja zakończona: {{ auction.expiresAt | date("Y-m-d H:i:s") }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <a class="btn btn-primary float-left" href="{{ url("auction_index")}}">Powrót</a>
+
+{% endblock %}
