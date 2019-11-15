@@ -17,7 +17,16 @@
             </ul>
         </div>
     </div>
-   
+
+    <div class="card">
+        <div class="card-body">
+            <ul class="list-group list-group-flus">
+                {% for offer in auction.offers %}
+                    <li class="list-group-item">Oferta: {{ offer.price }} zł, złożona {{ offer.createdAt | date("Y-m-d H:i:s") }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
             <a class="btn btn-primary float-left" href="{{ url("auction_index")}}">Powrót</a>
