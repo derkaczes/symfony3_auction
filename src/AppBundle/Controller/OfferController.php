@@ -53,15 +53,20 @@ class OfferController extends Controller {
         $bidForm->handleRequest($request);
 
         if($bidForm->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $lastOffer = $entityManager->getRepository(Offer::class)->findOneBy(["auction" => $auction], ["createdAt" => "DESC"]);
+            if(isset($lastOffer)) {
+                if($offer->getPrice() <= $lastOffer->getPrice()) {
+                    $this->addFlash("error", "Twoja oferta nie może być niższa niż {$lastOffer->getPrice()} zł.");
+                    return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
+                }
+            }
             $offer
                 ->setType(Offer::TYPE_BID)
                 ->setAuction($auction);
-
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($offer);
             $entityManager->flush();
-
-            $this->addFlash("success", "Złożyłęś oferte na przedmiot: {$auction->getTitle()} za kwotę: {$offer->getPrice()} zł.");
+            $this->addFlash("success", "Złożyłeś oferte na przedmiot: {$auction->getTitle()} za kwotę: {$offer->getPrice()} zł.");
         } else {
             $this->addFlash("error", "Nie udało się zalicytować przedmiotu: {$auction->getTitle()}.");
         }
