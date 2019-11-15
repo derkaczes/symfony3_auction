@@ -34,6 +34,8 @@ class OfferController extends Controller {
         $entityManager->persist($offer);
         $entityManager->flush();
 
+        $this->addFlash("success", "Kupiłeś przedmiot: {$auction->getTitle()} za kwotę: {$offer->getPrice()} zł.");
+
         return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
     }
 
@@ -56,6 +58,8 @@ class OfferController extends Controller {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($offer);
         $entityManager->flush();
+
+        $this->addFlash("success", "Złożyłęś oferte na przedmiot: {$auction->getTitle()} za kwotę: {$offer->getPrice()} zł.");
 
         return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
     }

@@ -313,7 +313,7 @@ class Auction
     /**
      * @param Offer $offer
      * 
-     * @return $this
+     * @return
      */
     public function addOffer(Offer $offer)
     {

@@ -87,6 +87,8 @@ class AuctionController extends Controller {
             $entityManager->persist($auction);
             $entityManager->flush();
 
+            $this->addFlash("success", "Aukcja {$auction->getTitle()} została dodana.");
+
             return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
         }
 
@@ -109,6 +111,8 @@ class AuctionController extends Controller {
             $entityManager->persist($auction);
             $entityManager->flush();
 
+            $this->addFlash("success", "Aukcja {$auction->getTitle()} została zaaktualizowana.");
+
             return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
         }
         return $this->render("Auction/edit.html.twig", ["form" => $form->createView()]);
@@ -125,6 +129,8 @@ class AuctionController extends Controller {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($auction);
         $entityManager->flush();
+
+        $this->addFlash("success", "Aukcja {$auction->getTitle()} została usunięta.");
 
         return $this->redirectToRoute("auction_index");
     }
@@ -143,6 +149,8 @@ class AuctionController extends Controller {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($auction);
         $entityManager->flush();
+
+        $this->addFlash("success", "Aukcja {$auction->getTitle()} została zakończona.");
 
         return $this->redirectToRoute("auto_details", ["id" => $auction->getId()]);
     }
