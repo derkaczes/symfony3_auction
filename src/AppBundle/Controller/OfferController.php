@@ -51,15 +51,20 @@ class OfferController extends Controller {
         $offer = new Offer();
         $bidForm = $this->createForm(BidType::class, $offer);
         $bidForm->handleRequest($request);
-        $offer
-            ->setType(Offer::TYPE_BID)
-            ->setAuction($auction);
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($offer);
-        $entityManager->flush();
+        if($bidForm->isValid()) {
+            $offer
+                ->setType(Offer::TYPE_BID)
+                ->setAuction($auction);
 
-        $this->addFlash("success", "Złożyłęś oferte na przedmiot: {$auction->getTitle()} za kwotę: {$offer->getPrice()} zł.");
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($offer);
+            $entityManager->flush();
+
+            $this->addFlash("success", "Złożyłęś oferte na przedmiot: {$auction->getTitle()} za kwotę: {$offer->getPrice()} zł.");
+        } else {
+            $this->addFlash("error", "Nie udało się zalicytować przedmiotu: {$auction->getTitle()}.");
+        }
 
         return $this->redirectToRoute("auction_details", ["id" => $auction->getId()]);
     }

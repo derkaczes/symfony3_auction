@@ -50,7 +50,7 @@
             {{ form_start(bidForm, {"attr": {"class": "float-left"}}) }}
                 {{ form_rest(bidForm) }}
                 {{ form_widget(bidForm.submit, {"attr": {"class": "btn-success"}}) }}
-            {{ form_end(bidForm) }}
+            {{ form_end(bidForm, {"attr": {"novalidate": "novalidate"}}) }}
         </div>
     </div>
 {% endblock %}
