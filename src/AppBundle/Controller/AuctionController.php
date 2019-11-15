@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AuctionController extends Controller {
@@ -82,6 +83,10 @@ class AuctionController extends Controller {
         if($request->isMethod("post")) {
             $form->handleRequest($request);
             
+            if($auction->getStartingPrice() >= $auction->getPrice()) {
+                $form->get("startngPrice")->addError(new FormError("Cena wywoławcza nie może być wyższa od ceny \"Kup teraz\""));
+            }
+
             if($form->isValid()) {
                 $auction
                     ->setStatus(Auction::STATUS_ACTIVE);
