@@ -28,18 +28,28 @@ class User extends BaseUser
     private $auctions;
 
     /**
+     * @var Offer[]/ArrayCollection
+     * 
+     * @ORM\OneToMany(targetEntity="Offer", mappedBy="owner")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
+     */
+    private $offers;
+    /**
      * User constructor.
      * 
      */
-    public function __construct() {
+    public function __construct() 
+    {
         parent::__construct();
         $this->auctions = new ArrayCollection();
+        $this->offers = new ArrayCollection();
     }
 
     /**
      * @return Auction[]/ArrayCollection
      */
-    public function getAuctions() {
+    public function getAuctions() 
+    {
         return $this->auctions;
     }
 
@@ -48,8 +58,28 @@ class User extends BaseUser
      * 
      * @return $this
      */
-    public function addAuction(Auction $auction) {
+    public function addAuction(Auction $auction)
+    {
         $this->auctions[] = $auction;
+        return $this;
+    }
+
+    /**
+     * @return Offer[]\ArrayCollection
+     */
+    public function getOffers()
+    {
+        return $this->offers;
+    }
+
+    /**
+     * @param Offer $offer
+     * 
+     * @return $this
+     */
+    public function addOffer(Offer $offer)
+    {
+        $this->offers[] = $offer;
         return $this;
     }
 }
