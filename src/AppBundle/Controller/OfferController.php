@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,11 @@ class OfferController extends Controller
      */
     public function buyAction(Auction $auction) 
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+        if($this->getUser() === $auction->getOwner()) {
+            throw new AccessDeniedException();
+        }
+
         $offer = new Offer();
         $offer
             ->setAuction($auction)
@@ -51,6 +57,10 @@ class OfferController extends Controller
      */
     public function bidAction(Request $request, Auction $auction) 
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+        if($this->getUser() == $auction->getOwner()) {
+            throw new AccessDeniedException();
+        }
         $offer = new Offer();
         $bidForm = $this->createForm(BidType::class, $offer);
         $bidForm->handleRequest($request);
