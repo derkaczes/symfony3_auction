@@ -11,14 +11,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class AuctionController extends Controller {
+class AuctionController extends Controller 
+{
     /**
      * @Route("/", name="auction_index")
      * 
      * @return Response
      */
-    public function indexAction() {
+    public function indexAction() 
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $auctions = $entityManager->getRepository(Auction::class)->findBy(["status" => Auction::STATUS_ACTIVE]);
 
@@ -32,7 +35,8 @@ class AuctionController extends Controller {
      * 
      * @return Response
      */
-    public function detailsAction(Auction $auction) {
+    public function detailsAction(Auction $auction) 
+    {
 
         if($auction->getStatus() === Auction::STATUS_FINISHED) {
             return $this->render("Auction/finished.html.twig", ["auction" => $auction]);
@@ -76,7 +80,10 @@ class AuctionController extends Controller {
      * 
      * @return Response
      */
-    public function addAction(Request $request) {
+    public function addAction(Request $request) 
+    {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+
         $auction = new Auction();
         $form = $this->createForm(AuctionType::class, $auction);
 
@@ -89,7 +96,8 @@ class AuctionController extends Controller {
 
             if($form->isValid()) {
                 $auction
-                    ->setStatus(Auction::STATUS_ACTIVE);
+                    ->setStatus(Auction::STATUS_ACTIVE)
+                    ->setOwner($this->getUser());
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($auction);
                 $entityManager->flush();
@@ -113,7 +121,13 @@ class AuctionController extends Controller {
      * 
      * @return Response
      */
-    public function editAction(Request $request, Auction $auction) {
+    public function editAction(Request $request, Auction $auction) 
+    {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+        if($this->getUser() !== $auction->getOwner()) {
+            throw new AccessDeniedException();
+        }
+
         $form = $this->createForm(AuctionType::class, $auction);
         if($request->isMethod("post")) {
             $form->handleRequest($request);
@@ -135,7 +149,13 @@ class AuctionController extends Controller {
      * 
      * @return RedirectResponse
      */
-    public function deleteAction(Auction $auction) {
+    public function deleteAction(Auction $auction) 
+    {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+        if($this->getUser() !== $auction->getOwner()) {
+            throw new AccessDeniedException();
+        }
+
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($auction);
         $entityManager->flush();
@@ -152,7 +172,13 @@ class AuctionController extends Controller {
      * 
      * @return RedirectResponse
      */
-    public function finishAction(Auction $auction) {
+    public function finishAction(Auction $auction) 
+    {
+        $this->denyAccessUnlessGranted("ROLE_USER");
+        if($this->getUser() !== $auction->getOwner()) {
+            throw new AccessDeniedException();
+        }
+        
         $auction
             ->setExpiresAt(new \DateTime())
             ->setStatus(Auction::STATUS_FINISHED);

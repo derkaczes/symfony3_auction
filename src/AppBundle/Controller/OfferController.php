@@ -9,7 +9,8 @@ use AppBundle\Entity\Auction;
 use AppBundle\Form\BidType;
 use AppBundle\Entity\Offer;
 
-class OfferController extends Controller {
+class OfferController extends Controller 
+{
 
     /**
      * @Route("/auction/buy/{id}", name="offer_buy", methods={"POST"})
@@ -18,7 +19,8 @@ class OfferController extends Controller {
      * 
      * @return RedirectResponse
      */
-    public function buyAction(Auction $auction) {
+    public function buyAction(Auction $auction) 
+    {
         $offer = new Offer();
         $offer
             ->setAuction($auction)
@@ -47,7 +49,8 @@ class OfferController extends Controller {
      * 
      * @return RedirectResponse
      */
-    public function bidAction(Request $request, Auction $auction) {
+    public function bidAction(Request $request, Auction $auction) 
+    {
         $offer = new Offer();
         $bidForm = $this->createForm(BidType::class, $offer);
         $bidForm->handleRequest($request);
