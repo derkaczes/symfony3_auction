@@ -30,7 +30,7 @@ class AuctionController extends Controller
 
     /**
      * @Route("/auction/details/{id}", name="auction_details")
-     * s
+     * 
      * @param Auction $auction
      * 
      * @return Response
@@ -41,17 +41,6 @@ class AuctionController extends Controller
         if($auction->getStatus() === Auction::STATUS_FINISHED) {
             return $this->render("Auction/finished.html.twig", ["auction" => $auction]);
         }
-
-        $deleteForm = $this->createFormBuilder()
-            ->setAction($this->generateUrl("auction_delete", ["id" => $auction->getId()]))
-            ->setMethod(Request::METHOD_DELETE)
-            ->add("submit", SubmitType::class, ["label" => "Usuń"])
-            ->getForm();
-        
-        $finishForm = $this->createFormBuilder() 
-            ->setAction($this->generateUrl("auction_finish", ["id" => $auction->getId()]))
-            ->add("submit", SubmitType::class, ["label" => "Zakończ"])
-            ->getForm();
 
         $buyForm = $this->createFormBuilder()
             ->setAction($this->generateUrl("offer_buy", ["id" => $auction->getId()]))
@@ -178,7 +167,7 @@ class AuctionController extends Controller
         if($this->getUser() !== $auction->getOwner()) {
             throw new AccessDeniedException();
         }
-        
+
         $auction
             ->setExpiresAt(new \DateTime())
             ->setStatus(Auction::STATUS_FINISHED);

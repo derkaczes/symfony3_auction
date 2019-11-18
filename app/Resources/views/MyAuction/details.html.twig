@@ -4,7 +4,7 @@
    <div class="card">
         <div class="card-body">
             <div class="card-title">
-                <a href="{{ url("auction_details", {"id": auction.id}) }}">{{ auction.title }}</a>
+                <a href="{{ url("my_auction_details", {"id": auction.id}) }}">{{ auction.title }}</a>
             </div>
             <div class="card-text">
                 <p>{{ auction.description }}</p>
@@ -30,18 +30,15 @@
     <div class="card">
         <div class="card-body">
             <a class="btn btn-primary float-left" href="{{ url("auction_index")}}">Powrót</a>
-            {{ form_start(buyForm, {"attr": {"class": "float-left"}}) }}
-                {{ form_widget(buyForm.submit, {"attr": {"class": "btn-success"}}) }}
-                {{ form_rest(buyForm) }}
-            {{ form_end(buyForm) }}
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-body">
-            {{ form_start(bidForm, {"attr": {"class": "float-left"}}) }}
-                {{ form_rest(bidForm) }}
-                {{ form_widget(bidForm.submit, {"attr": {"class": "btn-success"}}) }}
-            {{ form_end(bidForm, {"attr": {"novalidate": "novalidate"}}) }}
+            <a class="btn btn-info float-left" href="{{ url("auction_edit", {"id": auction.id}) }}">Edytuj</a>
+            {{ form_start(deleteForm, {"attr": {"class": "float-left"}}) }}
+                {{ form_widget(deleteForm.submit, {"attr": {"class": "btn-danger"}}) }}
+                {{ form_rest(deleteForm) }}
+            {{ form_end(deleteForm) }}
+            {{ form_start(finishForm, {"attr": {"class": "float-left"}}) }}
+                {{ form_widget(finishForm.submit, {"attr": {"class": "btn-warning"}}) }}
+                {{ form_rest(finishForm) }}
+            {{ form_end(finishForm) }}
         </div>
     </div>
 {% endblock %}
